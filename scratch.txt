@@ -1,0 +1,9 @@
+// // TODO done delete
+// console.log("update position has been called!!!");
+// if (this.x < this.xMax) {
+//   console.log("ad one more");
+//   this.x = this.x + 1;
+// } else {
+//   console.log("Back to zero");
+//   this.x = 0;
+// }
