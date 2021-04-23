@@ -1,5 +1,5 @@
 class Ball {
-  static gravity = 1;
+  static gravity = 15; // was 1
   static maxradius = 50;
 
   constructor(x, y, canvas) {

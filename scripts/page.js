@@ -90,7 +90,7 @@ canvas.addEventListener("click", function(event) {
 }, false);
 window.setInterval(function() {
   updateBalls(balls, canvas);
-}, 100);
+}, 30);
 
 // use jquery to resize elements on window resize
 $(document).ready(function(){
