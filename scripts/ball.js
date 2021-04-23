@@ -1,5 +1,6 @@
 class Ball {
   static gravity = 1;
+  static maxradius = 50;
 
   constructor(x, y, canvas) {
     this.canvas = canvas; // reference to the canvas we are drawing on
@@ -7,15 +8,16 @@ class Ball {
     this.y = y;
     this.xMax = canvas.width;
     this.yMax = canvas.height;
-    this.radius = 50; // TODO
-    this.color = 'rgb(200, 0, 0)'; // TODO
-    this.xVel = this.randomX(); // TODO randomX()
+    this.radius = this.randomRadius();
+    this.color = this.randomColor();
+    this.xVel = this.randomX();
     this.yVel = Ball.gravity;
   }
 
   draw() {
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.color; // "#FF0000"; //
+    ctx.fill();
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     ctx.stroke();
@@ -36,7 +38,6 @@ class Ball {
         }
       }
       this.xVel = this.xVel * -1;
-      // TODO decrement this.xVel
     }
     // Y first case: the ball is hitting a boundary
     if (change.y === true) {
@@ -61,7 +62,6 @@ class Ball {
     if (change.y === false) {
       this.y = this.y + this.yVel;
     }
-
     // this.applyGravity();
   } // end of updatePosition
 
@@ -123,4 +123,19 @@ class Ball {
       y: outputY
     };
   } // end of changeDirection
+
+  // Create a random rgb, this will be used for the next ball.
+  randomColor() {
+    let r = Math.floor(266 * Math.random());
+    let g = Math.floor(266 * Math.random());
+    let b = Math.floor(266 * Math.random());
+    let color = 'rgb(' + r + ', ' + g + ', ' + b +')';
+    console.log(color);
+    return color;
+  } // end of randomColor
+
+  randomRadius() {
+    let radius = Math.floor(Ball.maxradius * Math.random());
+    return radius;
+  }
 } // End Ball class

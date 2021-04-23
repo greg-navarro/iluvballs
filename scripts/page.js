@@ -1,4 +1,5 @@
-function sizeElements(banner, canvas) {
+function sizeElements() { // banner, canvas
+  console.log("we have called resize")
   // position canvas below banner
   var height = document.getElementById('banner').offsetHeight;
   var canvas = document.getElementById('canvas');
@@ -52,14 +53,14 @@ function newBall(evt, element, arr) {
 }
 
 function updateBalls(ball_array, canvas) {
-  console.log("update Balls has been called!!!!");
+  // console.log("update Balls has been called!!!!");
   var ctx = canvas.getContext('2d');
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (i = 0; i < ball_array.length; i++) {
     ball = ball_array[i];
     ball.updatePosition(); // TODO get xMax and yMax
-    console.log(ball.ballHello());
+    // console.log(ball.ballHello());
     ball.draw();
   }
 }
@@ -92,3 +93,10 @@ canvas.addEventListener("click", function(event) {
 window.setInterval(function() {
   updateBalls(balls, canvas);
 }, 100);
+
+// use jquery to resize elements on window resize
+$(document).ready(function(){
+  $(window).resize(function(){
+    sizeElements();
+  });
+});
