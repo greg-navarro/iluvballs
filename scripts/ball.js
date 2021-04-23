@@ -16,7 +16,7 @@ class Ball {
 
   draw() {
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle = this.color; // "#FF0000"; //
+    ctx.fillStyle = this.color;
     ctx.fill();
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -52,7 +52,6 @@ class Ball {
         }
       }
       this.yVel = this.yVel * -1;
-      // TODO decrement this.yVel
     }
 
     // second case: ball can continue motion
@@ -77,6 +76,7 @@ class Ball {
     }
   }
 
+  // This function is for debug purposes.
   ballHello() {
     message = "I am a ball at (" + this.x + ", " + this.y + ")";
     return message;
@@ -130,7 +130,6 @@ class Ball {
     let g = Math.floor(266 * Math.random());
     let b = Math.floor(266 * Math.random());
     let color = 'rgb(' + r + ', ' + g + ', ' + b +')';
-    console.log(color);
     return color;
   } // end of randomColor
 

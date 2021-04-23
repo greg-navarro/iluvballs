@@ -1,5 +1,4 @@
 function sizeElements() { // banner, canvas
-  console.log("we have called resize")
   // position canvas below banner
   var height = document.getElementById('banner').offsetHeight;
   var canvas = document.getElementById('canvas');
@@ -13,7 +12,7 @@ function sizeElements() { // banner, canvas
 }
 
 function mousePosition(event, windowcanvas) {
-  var canvas = windowcanvas; // NOTE changed
+  var canvas = windowcanvas;
   var canvasDomRect = canvas.getBoundingClientRect();
   var xPos = canvasDomRect.x
   var yPos = canvasDomRect.y
@@ -53,14 +52,13 @@ function newBall(evt, element, arr) {
 }
 
 function updateBalls(ball_array, canvas) {
-  // console.log("update Balls has been called!!!!");
+  // console.log("update Balls has been called!!!!"); // debug statement
   var ctx = canvas.getContext('2d');
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (i = 0; i < ball_array.length; i++) {
     ball = ball_array[i];
     ball.updatePosition(); // TODO get xMax and yMax
-    // console.log(ball.ballHello());
     ball.draw();
   }
 }
@@ -82,7 +80,7 @@ balls.push(new Ball(2, 3, canvas))
 for (i = 0; i < balls.length; i++) {
   balls[i].draw();
   var message = balls[i].ballHello();
-  console.log("Ball " + i + ": " + message);
+  // console.log("Ball " + i + ": " + message); // for debug purposes
 }
 
 let count = 0;
