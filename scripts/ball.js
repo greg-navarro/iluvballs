@@ -6,8 +6,8 @@ class Ball {
     this.canvas = canvas; // reference to the canvas we are drawing on
     this.x = x;
     this.y = y;
-    this.xMax = canvas.width;
-    this.yMax = canvas.height;
+    this.xMax = canvas.width;  // TODO update on resize
+    this.yMax = canvas.height;  // TODO update on resize
     this.radius = this.randomRadius();
     this.color = this.randomColor();
     this.xVel = this.randomX();
