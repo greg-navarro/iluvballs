@@ -73,8 +73,8 @@ const Canvas = ({ numBalls }) => {
       // get mouse location
       // const coordinates = pointerLocation(e);
       // reset ball location to mouse location
-      selectedBall.x = coordinates.x / ratio;
-      selectedBall.y = coordinates.y / ratio;
+      selectedBall.x = coordinates.x; // / ratio;
+      selectedBall.y = coordinates.y; // / ratio;
       // clear the canvas and redraw the balls
       renderBalls();
     }
@@ -86,6 +86,7 @@ const Canvas = ({ numBalls }) => {
     const coordinates = pointerLocation(e);
     const coordinatesLog = `x:${coordinates.x}, y:${coordinates.y}`;
     console.log("pointer released on canvas @ " + coordinatesLog);
+    console.log(selectedBall);
     pointerActive = false;
     selectedBall = null;
     return null;
