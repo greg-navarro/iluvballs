@@ -68,7 +68,6 @@ const Canvas = () => {
       // clear the canvas and redraw the balls
       renderBalls();
     }
-    return null;
   };
 
   // On pointerUp events: if a ball is selected then set that variable to null to halt any updates.
@@ -79,7 +78,6 @@ const Canvas = () => {
     console.log(selectedBall);
     pointerActive = false;
     selectedBall = null;
-    return null;
   };
 
   // Render the current balls onto the canvas.
@@ -112,9 +110,6 @@ const Canvas = () => {
     canvas.height = height * ratio;
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
-
-    // canvas.width = window.innerWidth
-    // canvas.height = window.innerHeight
 
     // attach event handlers
     canvas.onpointerdown = pointerDown;
