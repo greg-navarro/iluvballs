@@ -16,7 +16,7 @@ const getPixelRatio = (context) => {
 };
 
 // Blob-style canvas component with all functionality baked in.
-const Canvas = ({}) => {
+const Canvas = () => {
   let ref = useRef();
   let ballObjects = [
     { x: 25, y: 25, r: 15, color: "#ff0000" },
@@ -24,14 +24,14 @@ const Canvas = ({}) => {
   ];
   let pointerActive = false; // becomes true after pointerDown, and false on pointerUp
   let selectedBall = null; // the ball that is currently being moved
-  let ratio = 1;
+  let ratio = 1; // pixel density ratio, this may be adjusted in the useEffect hook later on
 
   // Determine pointer location relative to canvas.
-  const pointerLocation = (event) => {
+  const pointerLocation = (e) => {
     const rect = document.getElementById("canvas").getBoundingClientRect();
     let coordinates = {
-      x: (event.clientX - rect.x) * ratio,
-      y: (event.clientY - rect.top) * ratio,
+      x: (e.clientX - rect.x) * ratio,
+      y: (e.clientY - rect.top) * ratio,
     };
     return coordinates;
   };
@@ -40,9 +40,7 @@ const Canvas = ({}) => {
   // On pointerDown events: get mouse location and attempt to select a ball.
   const pointerDown = (e) => {
     const coordinates = pointerLocation(e);
-    const coordinatesLog = `x:${coordinates.x}, y:${coordinates.y}`;
-    console.log("pointer down on canvas @ " + coordinatesLog);
-    // determine if the mouse is over any balls
+    // determine if the mouse is over any balls, if so this will be our selection
     for (let ball of ballObjects) {
       if (
         coordinates.x < ball.x - ball.r ||
@@ -50,29 +48,23 @@ const Canvas = ({}) => {
         coordinates.y < ball.y - ball.r ||
         coordinates.y > ball.y + ball.r
       ) {
-        // do nothing, ball is not located under pointer
+        // do nothing, this ball is not located under pointer
       } else {
-        // select ball
+        // an object meeting our criteria was found
         selectedBall = ball;
         pointerActive = true;
-        console.log("we found a ball");
       }
     }
-
-    return null;
   };
 
   // On pointerMove events: if a ball is selecteed get mouse location and move the ball to center on the mouse position.
   const pointerMove = (e) => {
     if (pointerActive) {
+      // get pointer location
       const coordinates = pointerLocation(e);
-      const coordinatesLog = `x:${coordinates.x}, y:${coordinates.y}`;
-      console.log("pointer MOVING on canvas @ " + coordinatesLog);
-      // get mouse location
-      // const coordinates = pointerLocation(e);
       // reset ball location to mouse location
-      selectedBall.x = coordinates.x; // / ratio;
-      selectedBall.y = coordinates.y; // / ratio;
+      selectedBall.x = coordinates.x; 
+      selectedBall.y = coordinates.y; 
       // clear the canvas and redraw the balls
       renderBalls();
     }
@@ -114,9 +106,7 @@ const Canvas = ({}) => {
     // set up canvas dimensions (again, code from Pete Corey, see earlier citation)
     ratio = getPixelRatio(context);
     let width = getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
-    let height = getComputedStyle(canvas)
-      .getPropertyValue("height")
-      .slice(0, -2);
+    let height = getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
     console.log(`ratio ${ratio}`);
     canvas.width = width * ratio;
     canvas.height = height * ratio;
