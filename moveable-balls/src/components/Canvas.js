@@ -15,15 +15,22 @@ const getPixelRatio = (context) => {
   return (window.devicePixelRatio || 1) / backingStore;
 };
 
+const adjustCanvasSize = (canvas, ratio) => {
+    let width = getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+    let height = getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    return ratio;
+}
+
 // Blob-style canvas component with all functionality baked in.
-const Canvas = () => {
+const Canvas = ({ ballObjects, updateBallObjects }) => {
   let ref = useRef();
-  let ballObjects = [
-    { x: 25, y: 25, r: 15, color: "#ff0000" },
-    { x: 140, y: 140, r: 15, color: "#00ff00" },
-  ];
+
   let pointerActive = false; // becomes true after pointerDown, and false on pointerUp
-  let selectedBall = null; // the ball that is currently being moved
+  let selectedBall = -1; // index of the ball that is currently being moved
   let ratio = 1; // pixel density ratio, this may be adjusted in the useEffect hook later on
 
   // Determine pointer location relative to canvas.
@@ -41,7 +48,8 @@ const Canvas = () => {
   const pointerDown = (e) => {
     const coordinates = pointerLocation(e);
     // determine if the mouse is over any balls, if so this will be our selection
-    for (let ball of ballObjects) {
+    for (let i=0; i < ballObjects.length; i++ ) {
+      const ball = ballObjects[i];
       if (
         coordinates.x < ball.x - ball.r ||
         coordinates.x > ball.x + ball.r ||
@@ -51,22 +59,26 @@ const Canvas = () => {
         // do nothing, this ball is not located under pointer
       } else {
         // an object meeting our criteria was found
-        selectedBall = ball;
+        selectedBall = i;
         pointerActive = true;
+        console.log("ball found");
       }
     }
   };
 
-  // On pointerMove events: if a ball is selecteed get mouse location and move the ball to center on the mouse position.
+  // On pointerMove events: if a ball is selected get mouse location and move the ball to center on the mouse position.
   const pointerMove = (e) => {
     if (pointerActive) {
       // get pointer location
       const coordinates = pointerLocation(e);
       // reset ball location to mouse location
-      selectedBall.x = coordinates.x; 
-      selectedBall.y = coordinates.y; 
+      let updatedBallObjects = ballObjects.map((item, j) => { return j !== selectedBall ? item : Object.assign({}, item, { x: coordinates.x, y: coordinates.y }); });
+       
+      console.log(ballObjects);
+      console.log(updatedBallObjects);
       // clear the canvas and redraw the balls
-      renderBalls();
+     //   renderBalls();
+        updateBallObjects([...updatedBallObjects]);
     }
   };
 
@@ -75,9 +87,9 @@ const Canvas = () => {
     const coordinates = pointerLocation(e);
     const coordinatesLog = `x:${coordinates.x}, y:${coordinates.y}`;
     console.log("pointer released on canvas @ " + coordinatesLog);
-    console.log(selectedBall);
+    // console.log(selectedBall);
     pointerActive = false;
-    selectedBall = null;
+    selectedBall = -1;
   };
 
   // Render the current balls onto the canvas.
@@ -103,13 +115,7 @@ const Canvas = () => {
     let context = canvas.getContext("2d");
     // set up canvas dimensions (again, code from Pete Corey, see earlier citation)
     ratio = getPixelRatio(context);
-    let width = getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
-    let height = getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
-    console.log(`ratio ${ratio}`);
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
+    adjustCanvasSize(canvas, ratio);
 
     // attach event handlers
     canvas.onpointerdown = pointerDown;
